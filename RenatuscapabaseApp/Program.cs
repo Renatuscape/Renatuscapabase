@@ -7,7 +7,7 @@ namespace RenatuscapabaseApp
     {
         static void Main(string[] args)
         {
-            DbConnector.Connect();
+            SqlRepository.Connect();
         }
     }
 }

@@ -2,7 +2,19 @@
 
 namespace RenatuscapabaseLibrary
 {
-    public static class DbConnector
+    public static class DbConnect
+    {
+        private const string _connectionString = @"Server = (localdb)\MSSQLLocalDB;" +
+                                          "Database = Renatuscapabase;" +
+                                          "Integrated Security = true;";
+        public static SqlCommand ConnectCommand()
+        {
+            using SqlConnection connection = new(_connectionString);
+            SqlCommand command = connection.CreateCommand();
+            return command;
+        }
+    }
+    public static class SqlRepository
     {
         private const string _connectionString = @"Server = (localdb)\MSSQLLocalDB;" +
                                                   "Database = Renatuscapabase;" +
