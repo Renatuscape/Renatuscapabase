@@ -24,10 +24,12 @@ namespace RenatuscapabaseLibrary
                 }
                 else if (userCommand == "2")
                 {
-                    TableColumn newColumn = ColumnFactory.CreateColumn();
                     Console.WriteLine("Which table would you like to add a column to?");
                     string tableName = InputValidation.SanitiseName(Console.ReadLine() ?? "");
-                    SqlRepository.AddColumn(command, "TestTable", newColumn);
+                    Console.WriteLine();
+                    TableColumn newColumn = ColumnFactory.CreateColumn();
+                    SqlRepository.AddColumn(command, tableName, newColumn);
+                    Console.WriteLine();
                     Console.WriteLine(newColumn);
                 }
                 connection.Close();
