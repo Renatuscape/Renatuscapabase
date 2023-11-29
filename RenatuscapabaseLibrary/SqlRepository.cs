@@ -49,28 +49,57 @@ namespace RenatuscapabaseLibrary
 
         public static string GetTable(SqlCommand command, string tableName)
         {
+            int padding = 20;
             command.CommandText = "SELECT* \n";
             command.CommandText += $"FROM {InputValidation.SanitiseName(tableName).Trim()} \n";
             Console.WriteLine("Command debug: "+ command.CommandText);
             string returnText = string.Empty;
             var reader = command.ExecuteReader();
 
+            //DRAW EVERY COLUMN IN TABLE
             for (int i = 0; i < reader.FieldCount; i++)
             {
-                returnText += $"|{reader.GetName(i)}\t";
+                string toAdd = StringPadder($"|{reader.GetName(i)}");
+                returnText += toAdd;
             }
-            returnText += "\n";
 
+            //DRAW UNDERSCORE
+            returnText = UnderlineString(returnText);
+
+
+            //GET EACH ROW
             while (reader.Read())
             {
+                //GET EACH COLUMN IN ROW
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    returnText += $"|{reader[i]}\t";
+                    string toAdd = StringPadder($"|{reader[i]}");
+                    returnText += toAdd;
                 }
                 returnText += "\n";
             }
 
             return returnText;
+
+            string StringPadder(string x)
+            {
+                while (x.Length < padding)
+                {
+                    x += " ";
+                }
+                return x;
+            }
+
+            string UnderlineString(string x)
+            {
+                x += "\n";
+                for (int i = 0; i < reader.FieldCount * padding; i++)
+                {
+                    x += "-";
+                }
+                x += "\n";
+                return x;
+            }
         }
 
         public static string GetAllTables(string tableName)

@@ -44,12 +44,12 @@ namespace RenatuscapabaseLibrary
                 {
                     Console.WriteLine("Change column in which table?");
                     string tableName = InputValidation.SanitiseName(Console.ReadLine() ?? "");
-                    Console.WriteLine("Which column?");
-                    string columnName = InputValidation.SanitiseName(Console.ReadLine() ?? "");
-                    Console.WriteLine("Enter new data");
-                    string newData = InputValidation.SanitiseName(Console.ReadLine() ?? "");
                     Console.WriteLine("Enter row ID");
                     int rowID = Convert.ToInt32(InputValidation.SanitiseName(Console.ReadLine() ?? ""));
+                    Console.WriteLine("Enter column name");
+                    string columnName = InputValidation.SanitiseName(Console.ReadLine() ?? "");
+                    Console.WriteLine("Enter new data");
+                    string newData = Console.ReadLine() ?? "";
                     SqlRepository.UpdateColumn(command, tableName, columnName, rowID, newData);
                 }
                 connection.Close();
