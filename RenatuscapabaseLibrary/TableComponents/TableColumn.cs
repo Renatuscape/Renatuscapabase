@@ -24,7 +24,7 @@
                 throw new Exception("Content in this column cannot be null.");
             }
 
-            if (DataType == ColumnDataType.Int || DataType == ColumnDataType.Float || DataType == ColumnDataType.Decimal)
+            if (DataType == ColumnDataType.Decimal)
             {
                 if (float.TryParse(content, out var parsedNumber))
                 {
