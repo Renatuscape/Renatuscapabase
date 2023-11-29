@@ -7,7 +7,8 @@ namespace RenatuscapabaseApp
     {
         static void Main(string[] args)
         {
-            SqlRepository.Connect();
+            UserInterface userInterface = new();
+            userInterface.Initialise();
         }
     }
 }
