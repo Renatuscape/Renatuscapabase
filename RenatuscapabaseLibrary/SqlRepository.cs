@@ -60,11 +60,11 @@ namespace RenatuscapabaseLibrary
         public static void AddColumn(SqlCommand command, string tableName, TableColumn column)
         {
             command.CommandText =  $"ALTER TABLE {InputValidation.SanitiseName(tableName)} \n";
-            command.CommandText += $"ADD {InputValidation.SanitiseName(column.ColumnName)} {column.DataType}";
+            command.CommandText += $"ADD {InputValidation.SanitiseName(column.ColumnName)} {column.DataType}({column.DataLength})";
 
-            command.Parameters.AddWithValue("@tableName", tableName);
-            Console.WriteLine($"Debug CreateTable():\n{command.CommandText}");
-
+            Console.WriteLine($"Debug SQL:\n{command.CommandText}");
+            Console.WriteLine();
+            Console.WriteLine("Column successfully added.");
             int rowsAffected = command.ExecuteNonQuery();
             Console.WriteLine("Rows affected: " + rowsAffected);
         }
