@@ -10,6 +10,8 @@
                 Console.WriteLine("\n[0] Create table" +
                                   "\n[1] Drop table" +
                                   "\n[2] Add column" +
+                                  "\n[3] Get table" +
+                                  "\n[4] Update column" +
                                   "\n[X] Exit");
 
                 string userCommand = Console.ReadKey().KeyChar.ToString() ?? "";

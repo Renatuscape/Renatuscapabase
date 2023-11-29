@@ -32,6 +32,26 @@ namespace RenatuscapabaseLibrary
                     Console.WriteLine();
                     Console.WriteLine(newColumn);
                 }
+                else if (userCommand == "3")
+                {
+                    Console.WriteLine("Which table would you like to get?");
+                    string tableName = InputValidation.SanitiseName(Console.ReadLine() ?? "");
+                    Console.WriteLine();
+                    var toPrint = SqlRepository.GetTable(command, tableName);
+                    Console.WriteLine(toPrint);
+                }
+                else if (userCommand == "4")
+                {
+                    Console.WriteLine("Change column in which table?");
+                    string tableName = InputValidation.SanitiseName(Console.ReadLine() ?? "");
+                    Console.WriteLine("Which column?");
+                    string columnName = InputValidation.SanitiseName(Console.ReadLine() ?? "");
+                    Console.WriteLine("Enter new data");
+                    string newData = InputValidation.SanitiseName(Console.ReadLine() ?? "");
+                    Console.WriteLine("Enter row ID");
+                    int rowID = Convert.ToInt32(InputValidation.SanitiseName(Console.ReadLine() ?? ""));
+                    SqlRepository.UpdateColumn(command, tableName, columnName, rowID, newData);
+                }
                 connection.Close();
             }
             catch (Exception ex)
