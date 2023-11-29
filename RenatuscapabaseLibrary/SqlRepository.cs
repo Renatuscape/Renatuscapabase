@@ -47,9 +47,30 @@ namespace RenatuscapabaseLibrary
             Console.WriteLine("Rows affected: " + rowsAffected);
         }
 
-        public static string GetTable(string tableName)
+        public static string GetTable(SqlCommand command, string tableName)
         {
-            throw new NotImplementedException();
+            command.CommandText = "SELECT* \n";
+            command.CommandText += $"FROM {InputValidation.SanitiseName(tableName).Trim()} \n";
+            Console.WriteLine("Command debug: "+ command.CommandText);
+            string returnText = string.Empty;
+            var reader = command.ExecuteReader();
+
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                returnText += $"|{reader.GetName(i)}\t";
+            }
+            returnText += "\n";
+
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    returnText += $"|{reader[i]}\t";
+                }
+                returnText += "\n";
+            }
+
+            return returnText;
         }
 
         public static string GetAllTables(string tableName)
@@ -61,6 +82,11 @@ namespace RenatuscapabaseLibrary
         {
             command.CommandText =  $"ALTER TABLE {InputValidation.SanitiseName(tableName)} \n";
             command.CommandText += $"ADD {InputValidation.SanitiseName(column.ColumnName)} {column.DataType}({column.DataLength})";
+            if (column.DefaultContent != null)
+            {
+                command.CommandText += column.DefaultContent;
+            }
+            command.CommandText += ";";
 
             Console.WriteLine($"Debug SQL:\n{command.CommandText}");
             Console.WriteLine();
@@ -74,6 +100,26 @@ namespace RenatuscapabaseLibrary
             foreach (TableColumn column in  columns) {
                 AddColumn(command, tableName, column);
             }
+        }
+
+        public static void UpdateColumn(SqlCommand command, string tableName, string columnName, int id, string newContent)
+        {
+            string commandString =
+@"UPDATE [tableName]
+SET [columnName] = @newContent
+WHERE id = @id";
+
+            commandString = commandString.Replace("[columnName]", InputValidation.SanitiseName(columnName));
+            commandString = commandString.Replace("[tableName]", InputValidation.SanitiseName(tableName));
+            command.CommandText = commandString;
+
+            command.Parameters.AddWithValue("@newContent", newContent);
+            command.Parameters.AddWithValue("@id", id);
+
+            Console.WriteLine(command.CommandText);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            Console.WriteLine("Rows affected: " + rowsAffected);
         }
     }
 }
