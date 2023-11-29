@@ -16,18 +16,21 @@ namespace RenatuscapabaseLibrary
             string columnName = ChooseColumnName();
             bool isNullable = IsNullable();
             bool isUnique = IsUnique();
-            string? content = InputContent();
+            string? defaultContent = SetDefault();
 
-            if (content == "" && isNullable)
+            if (!isNullable && !string.IsNullOrWhiteSpace(defaultContent))
             {
-                content = null;
-            }
-            else if (content == "" &&  dataType == ColumnDataType.Decimal)
-            {
-                content = "0";
+                if (dataType != ColumnDataType.Decimal)
+                {
+                    defaultContent = $" DEFAULT '{InputValidation.SanitiseName(defaultContent)}'";
+                }
+                else if (dataType == ColumnDataType.Decimal)
+                {
+                    defaultContent = $" DEFAULT '{InputValidation.SanitiseName(defaultContent)}'";
+                }
             }
 
-            return new(dataType, dataLength, columnName, isNullable, isUnique, content);
+            return new(dataType, dataLength, columnName, isNullable, isUnique, defaultContent);
         }
 
         static int ChooseDataType()
@@ -96,9 +99,9 @@ namespace RenatuscapabaseLibrary
                 return false;
         }
 
-        static string InputContent()
+        static string SetDefault()
         {
-            Console.WriteLine("Enter column content or null if allowed:");
+            Console.WriteLine("Enter default content or none:");
             string input = Console.ReadLine() ?? "";
             return input;
         }
